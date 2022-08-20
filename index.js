@@ -1,7 +1,4 @@
-﻿
-var that;
-
-$(document).ready(function(){
+﻿$(document).ready(function(){
 	ajaxLOAD();
 });
 setInterval(ajaxLOAD, 30000);
@@ -16,34 +13,32 @@ var app = new Vue({
     data: {
         message: "🐵 Hello World 🔮",
         timestamp: `Timestamp ${new Date().toLocaleString()}`,
+        firstLoad: true,
         listItems: [],
-        responseTest : []
+        responseTest: [],
+        permission : Notification.permission
     },
     methods: {
-        /*randomGenerate() {
-            this.message = "🐵 Hello Whoever you are 🔮";
-		this.getDataForList();
-        },*/
         getDataForList(response = []) {
-            /*this.axios.get({
-                url: "https://traffic.mdpd.com/api/traffic",
-                jsonp: "callback",
-                crossOrigin: null,
-                dataType: "jsonp",
-                data: {
-                    format: "json"
-                },
-                success: function(response) {
-			  this.responseTest = response;
-                    this.listItems = response;
-                }
-            });*/
-		this.listItems = [...new Map(response.map(v => [v.Address, v])).values()]; //remove duplicate address
-		//this.listItems = response;
+            var _tempListItems = [...this.listItems];
+            this.listItems = [...new Map(response.map(v => [v.Address, v])).values()]; //remove duplicate address
+            if (!this.firstLoad ? _tempListItems[0].Address != this.listItems[0].Address : false) {
+                this.showNotification("New Incident", this.listItems[0].Signal + " at " + this.listItems[0].Address);
+            }
+            this.firstLoad = false;
         },
-	copyAddress(address) {
-		navigator.clipboard.writeText(address);
-	},
+	    copyAddress(address) {
+		    navigator.clipboard.writeText(address);
+        },
+        showNotification(title, body) {
+            if (this.permission == "granted") {
+                var notification = new Notification(title, { body });
+                notification.onclick = () => {
+                    this.copyAddress(this.listItems[0].Address);
+                    notification.close();
+                }
+            }
+        }
     },
 })
 
