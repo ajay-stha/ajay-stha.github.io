@@ -1,0 +1,57 @@
+﻿svg {
+  width: 256px;
+  height: 256px;
+}
+
+/* SMOKE */
+#smoke-1 {
+  stroke-dasharray: 0, 10;
+  animation: smoke 6s ease infinite;
+}
+
+#smoke-2 {
+  stroke-dasharray: 0, 10;
+  animation: smoke 6s 0.5s ease infinite;
+}
+
+@keyframes smoke {
+  0% { stroke-dasharray: 0, 10; }
+  50% { stroke-dasharray: 10, 0; }
+  100% { stroke-dasharray: 10, 0; opacity: 0; }
+}
+
+/* WRITING */
+#line-1 {
+  opacity: 0;
+  animation: writing 0.5s linear forwards;
+}
+
+#line-2 {
+  opacity: 0;
+  animation: writing 0.5s 1s linear forwards;
+}
+
+#line-3 {
+  opacity: 0;
+  animation: writing 0.5s 1.5s linear forwards;
+}
+
+#line-4 {
+  opacity: 0;
+  animation: writing 0.5s 2s linear forwards;
+}
+
+@keyframes writing {
+  0% { width: 0px; opacity: 1;}
+  100% { width: 14px; opacity: 1;}
+}
+
+.copyToClipboard{
+   filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(225deg) brightness(105%) contrast(101%);
+}
+.copyToClipboard:hover{
+   filter: invert(76%) sepia(11%) saturate(359%) hue-rotate(314deg) brightness(83%) contrast(97%);
+}
+//div:not([class]) {display: none;}
+
+
