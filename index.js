@@ -23,7 +23,16 @@ var app = new Vue({
             var _tempListItems = [...this.listItems];
             this.listItems = [...new Map(response.map(v => [v.Address, v])).values()]; //remove duplicate address
             if (!this.firstLoad ? _tempListItems[0].Address != this.listItems[0].Address : false) {
-                this.showNotification("New Incident", this.listItems[0].Signal + " at " + this.listItems[0].Address);
+                if (this.permission == "granted") {
+                    this.showNotification("New Incident", this.listItems[0].Signal + " at " + this.listItems[0].Address);
+                }
+                else if (this.permission == "default") {
+                    Notification.requestPermission(function (permission) {
+                        if (permission === "granted") {
+                            this.showNotification("New Incident", this.listItems[0].Signal + " at " + this.listItems[0].Address);
+                        }
+                    });
+                }
             }
             this.firstLoad = false;
         },
@@ -31,13 +40,11 @@ var app = new Vue({
 		    navigator.clipboard.writeText(address);
         },
         showNotification(title, body) {
-            if (this.permission == "granted") {
-                var notification = new Notification(title, { body });
-                notification.onclick = () => {
-                    this.copyAddress(this.listItems[0].Address);
-                    notification.close();
-                }
-            }
+            var notification = new Notification(title, { body });
+            notification.onclick = () => {
+                this.copyAddress(this.listItems[0].Address);
+                notification.close();
+            }                 
         }
     },
 })
