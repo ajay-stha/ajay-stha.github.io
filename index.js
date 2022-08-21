@@ -42,7 +42,11 @@ var app = new Vue({
         showNotification(title, body) {
             var notification = new Notification(title, { body });
             notification.onclick = () => {
-                this.copyAddress(this.listItems[0].Address);
+                var isFirefox = typeof InstallTrigger !== 'undefined';
+                if (!isFirefox) {
+                    window.focus();
+                    this.copyAddress(this.listItems[0].Address);
+                }                
                 notification.close();
             }                 
         }
