@@ -21,6 +21,7 @@ var app = new Vue({
     methods: {
         getDataForList(response = []) {
             var _tempListItems = [...this.listItems];
+            //this.listItems = this.listItems.map(item => item.CreateTime = new Date(item.CreateTime));
             this.listItems = [...new Map(response.map(v => [v.Address, v])).values()]; //remove duplicate address
             if (!this.firstLoad ? _tempListItems[0].Address != this.listItems[0].Address : false) {
                 if (this.permission == "granted") {
